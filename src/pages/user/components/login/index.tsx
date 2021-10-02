@@ -1,6 +1,6 @@
 import { Form, Input, Button, Card } from 'antd';
-import { LoginService } from './service/LoginService'
-import { useRequest } from 'umi';
+import { UserService } from '../../service/UserService'
+import { useRequest, history } from 'umi';
 
 import styles from './index.less'
 
@@ -13,14 +13,17 @@ const tailLayout = {
 };
 const Login: React.FC<{}> = () => {
   const [form] = Form.useForm();
-  const login = useRequest(LoginService.login, {
+  const login = useRequest(UserService.login, {
     manual: true,
     onSuccess: (data) => {
-      console.log(data);
+      if (data.token !== "") {
+        localStorage.setItem("token", data.token);
+        history.push('/admin')
+      }
+
     }
   })
   const onFinish = (values: any) => {
-    console.log(values);
     login.run({ account: values.account, password: values.password })
   };
 
@@ -47,7 +50,7 @@ const Login: React.FC<{}> = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button loading={login.loading} type="primary" htmlType="submit">
               登录
             </Button>
             <Button style={{ marginLeft: 10 }} htmlType="button" onClick={onReset}>

@@ -1,16 +1,26 @@
 import { Layout, Menu, Space, Dropdown, Button } from 'antd';
-import {
-  PieChartOutlined,
-  MailOutlined,
-} from '@ant-design/icons';
-import { history } from 'umi';
+import { PieChartOutlined, MailOutlined } from '@ant-design/icons';
+import { history, useRequest } from 'umi';
 import { manus } from '../../config/routes'
+import { useState } from 'react'
+import { UserService } from '@/pages/user/service/UserService'
+import { useLocation } from 'dva'
+
 import styles from './index.less'
+
 
 const { SubMenu } = Menu;
 const { Header, Sider, Content } = Layout;
 
 const BasicLayout = (props: any) => {
+  const [user, setUser] = useState({})
+  const { pathname } = useLocation()
+  useRequest(UserService.info, {
+    manual: false,
+    onSuccess: (data) => {
+      setUser(data)
+    }
+  })
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
@@ -20,14 +30,16 @@ const BasicLayout = (props: any) => {
             <Space>
               <Dropdown overlay={
                 <Menu>
-                  <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                      退出登录
-                    </a>
+                  <Menu.Item key="login_out">
+                    <Button size="small" type="link" onClick={() => {
+                      history.push("/login")
+                      localStorage.removeItem("token");
+                    }}>退出登录</Button>
                   </Menu.Item>
                 </Menu>
               } placement="bottomLeft">
-                <Button ghost>admin</Button>
+                {/* @ts-ignore */}
+                <Button ghost>{user?.name}</Button>
               </Dropdown>
             </Space>
           </Space>
@@ -37,10 +49,9 @@ const BasicLayout = (props: any) => {
       <Layout className={styles.innerlayout}>
         <Sider width={225} className={styles.innerspder}>
           <Menu
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
             mode="inline"
             theme="dark"
+            selectedKeys={[pathname]}
           >
             {
               manus.map(menu => menu.routes && menu?.routes.length > 0 ?
