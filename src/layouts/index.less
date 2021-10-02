@@ -1,0 +1,30 @@
+
+@header-height: 50px;
+.layout{
+  .header{
+    position:fixed;
+    width:100%;
+    left:0;
+    top:0;
+    right: 0;
+    height: @header-height;
+    z-index: 1000;
+    background: rgba(0, 102, 255, 0.685);
+    font-size: 25px;
+    line-height: 50px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+  }
+  .innerlayout{
+    margin-top:  @header-height;
+    .innerspder{
+      overflow:auto;
+      height: 100vh !important;
+      position: fixed;
+      left: 0 !important;
+    }
+  }
+  
+}
