@@ -1,0 +1,46 @@
+.container{
+  padding-bottom: 80px;
+  .dynamicDeleteButton {
+    position: relative;
+    top: 4px;
+    margin: 0 8px;
+    color: rgb(252, 38, 0);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dynamicDeleteButton:hover {
+    color: rgb(252, 38, 0);
+  }
+  .dynamicDeleteButton[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .dynamicDeleteButton2 {
+    position: relative;
+    top: -10px;
+    margin: 0 8px;
+    color: rgb(252, 38, 0);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dynamicDeleteButton2:hover {
+    color: rgb(252, 38, 0);
+  }
+  .dynamicDeleteButton2[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  
+  .submit{
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: white;
+  }
+}

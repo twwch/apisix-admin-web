@@ -4,7 +4,7 @@ import { message } from 'antd'
 import { history } from 'umi';
 
 const request = extend({
-  timeout: 1000,
+  timeout: 1000 * 100,
 });
 
 // request拦截器, 改变url 或 options.

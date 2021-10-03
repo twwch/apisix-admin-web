@@ -21,11 +21,12 @@ const BasicLayout = (props: any) => {
       setUser(data)
     }
   })
+  const openKeys = [`/${pathname.split("/")[1]}/${pathname.split("/")[2]}`]
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
         <div>APISIX-ADMIN</div>
-        <div style={{ marginTop: "-4px" }}>
+        <div style={{ marginTop: "-4px", zIndex: 9999 }}>
           <Space direction="vertical">
             <Space>
               <Dropdown overlay={
@@ -39,7 +40,7 @@ const BasicLayout = (props: any) => {
                 </Menu>
               } placement="bottomLeft">
                 {/* @ts-ignore */}
-                <Button ghost>{user?.name}</Button>
+                <Button ghost>{user?.name ? user?.name : 'unknown'}</Button>
               </Dropdown>
             </Space>
           </Space>
@@ -51,11 +52,12 @@ const BasicLayout = (props: any) => {
           <Menu
             mode="inline"
             theme="dark"
+            defaultOpenKeys={openKeys}
             selectedKeys={[pathname]}
           >
             {
               manus.map(menu => menu.routes && menu?.routes.length > 0 ?
-                <SubMenu key="sub1" icon={<MailOutlined />} title={menu.name}>
+                <SubMenu key={menu.path} icon={<MailOutlined />} title={menu.name}>
                   {
                     menu?.routes.map(item => <Menu.Item key={item.path} onClick={() => {
                       history.push(item.path)

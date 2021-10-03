@@ -1,4 +1,4 @@
-
+import { Upstream } from './upstream'
 interface RouteValue {
   id: string
   create_time: number
@@ -9,6 +9,7 @@ interface RouteValue {
   upstream_id: string
   desc: string
   hosts?: string[]
+  methods?: string[]
 }
 
 interface Route {
@@ -21,6 +22,19 @@ interface Routes {
   routes: Route[]
 }
 
+interface RouteCreate {
+  uris: string[]
+  hosts?: string[]
+  name: string
+  desc: string
+  remote_addrs: string
+  methods?: string[]
+}
+interface CreateRouteConf {
+  route: RouteCreate
+  upstream: Upstream
+}
+
 export {
-  Routes, Route, RouteValue
+  Routes, Route, RouteValue, RouteCreate, CreateRouteConf
 }

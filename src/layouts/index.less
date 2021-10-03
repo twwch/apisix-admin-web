@@ -9,7 +9,7 @@
     right: 0;
     height: @header-height;
     z-index: 1000;
-    background: rgba(0, 102, 255, 0.685);
+    background: rgb(9, 86, 202);
     font-size: 25px;
     line-height: 50px;
     color: white;
@@ -27,4 +27,17 @@
     }
   }
   
+}
+
+:global{
+  .ant-drawer-content-wrapper{
+    margin-top: @header-height !important;
+  }
+  
+  .ant-drawer-mask{
+    margin-top: @header-height !important;
+  }
+  .ant-drawer{
+    z-index: 99 !important;
+  }
 }
