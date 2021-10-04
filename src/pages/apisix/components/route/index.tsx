@@ -2,14 +2,17 @@ import { Card, Button, Tag } from 'antd';
 import { useState, useEffect } from 'react'
 import { useRequest } from 'umi';
 import RouteService from '../../service/RouteService';
-import { Routes, Route as RouteVm } from '../../vms/route'
+import { Routes, Route as RouteVm, RouteValue } from '../../vms/route'
 import { Table } from 'antd';
 import { CreateDrawer } from './components/createDrawer'
 import moment from 'moment'
+import styles from './index.less'
 
 const tagStyle = { marginLeft: 5, marginBottom: 5 }
 const Route: React.FC<{}> = () => {
   const [routes, setRoutes] = useState<Routes>()
+  // @ts-ignore
+  const [routeValue, setRouteValue] = useState<RouteValue>({})
   const [visible, setVisible] = useState<boolean>(false)
   const list = useRequest(RouteService.list, {
     manual: true,
@@ -35,6 +38,11 @@ const Route: React.FC<{}> = () => {
     deleteRoute.run(route_id, upstream_id)
   }
 
+  const onEdit = (value: RouteValue) => {
+    setVisible(true)
+    setRouteValue(value)
+  }
+
   const columns = [
     {
       title: 'RouteId',
@@ -55,7 +63,7 @@ const Route: React.FC<{}> = () => {
       title: '路由规则',
       dataIndex: 'uri',
       key: 'uri',
-      width: 100,
+      width: 200,
       render: (text: string, record: RouteVm) => record.value.uri ?
         <Tag color="#f50"> {record.value.uri} </Tag>
         : record.value.uris?.map(i => <Tag key={i} style={tagStyle} color="#55acee">{i}</Tag>)
@@ -101,24 +109,27 @@ const Route: React.FC<{}> = () => {
       width: 200,
       render: (text: string, record: RouteVm) => moment.unix(record.value.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
-    // {
-    //   title: '操作',
-    //   key: 'action',
-    //   fixed: 'right',
-    //   render: (text: string, record: RouteVm) => (
-    //     <Space size="middle">
-    //       <Button disabled onClick={() => onDelete(record.value.id, record.value.upstream_id)} type="link">删 除</Button>
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 80,
+      render: (text: string, record: RouteVm) => (
+        <Button onClick={() => onEdit(record.value)} type="link">编辑</Button>
+      ),
+    },
   ];
   return (
     <>
-      <Card
+      <Card className={styles.card}
         style={{ width: '100%' }}
         title="APISIX 路由管理"
         loading={list.loading}
-        extra={<Button onClick={() => setVisible(true)} type="link">新建路由规则</Button>}
+        extra={<Button onClick={() => {
+          setVisible(true)
+          // @ts-ignore
+          setRouteValue({})
+        }} type="link">新建路由规则</Button>}
       >
         {/* @ts-ignore */}
         <Table key="key" scroll={{ x: 1000, y: `calc(100vh - ${350}px)` }} columns={columns} dataSource={routes?.routes} />
@@ -127,6 +138,7 @@ const Route: React.FC<{}> = () => {
         visible={visible}
         setVisible={setVisible}
         onSave={onSave}
+        id={routeValue.id}
       />
     </>
   )

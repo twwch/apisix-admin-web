@@ -1,7 +1,7 @@
-import { Drawer, message } from 'antd';
-import { Form, Input, Card, Button, Space, InputNumber, Checkbox, Row, Col } from 'antd';
+import { Form, Input, Card, Button, Space, InputNumber, Checkbox, Row, Col, Drawer, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { RouteService } from '../../../service/RouteService'
+import { useEffect } from 'react'
 import { useRequest } from 'umi';
 
 import styles from './createDrawer.less'
@@ -19,13 +19,15 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-
+const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE']
 const CreateDrawer: React.FC<{
   visible: boolean
+  id: string
   onSave: () => void
   setVisible: (visible: boolean) => void
-}> = ({ visible, onSave, setVisible }) => {
+}> = ({ visible, id, onSave, setVisible }) => {
   const [form] = Form.useForm();
+
 
   const create = useRequest(RouteService.create, {
     manual: true,
@@ -34,7 +36,16 @@ const CreateDrawer: React.FC<{
       form.resetFields()
     }
   })
-
+  const get = useRequest(RouteService.get, {
+    manual: true,
+    onSuccess: (data) => {
+      form.setFieldsValue({
+        route: data.route,
+        upstream: data.upstream,
+        nodes: data.nodes
+      })
+    }
+  })
   const onFinish = (values: any) => {
     if (!values.route?.uris || values.route?.uris?.length === 0) {
       message.error('请检查route path配置')
@@ -62,20 +73,30 @@ const CreateDrawer: React.FC<{
         name: values.upstream.name,
         desc: values.upstream.desc,
       },
+      id: id,
     })
   };
   const closeHandle = () => {
     setVisible(false)
     form.resetFields()
   }
-  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE']
+
+  useEffect(() => {
+    if (id && visible) {
+      get.run(id)
+    }
+  }, [id, visible])
+
   return (
-    <Drawer visible={visible} width={600} title='新建路由规则' onClose={closeHandle} >
+    <Drawer visible={visible} width={600} title={id ? '更新路由规则' : '新建路由规则'} onClose={closeHandle} >
       <Form form={form} name="create_route" className={styles.container}  {...layout} onFinish={onFinish}>
-        <Card title="Route 配置" >
-          <Form.Item name={['route', 'name']} label="名称" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
+        <Card loading={id !== '' && get.loading} title="Route 配置" >
+          {
+            id === '' &&
+            <Form.Item name={['route', 'name']} label="名称" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+          }
           <Form.Item name={['route', 'desc']} label="描述" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
@@ -145,7 +166,7 @@ const CreateDrawer: React.FC<{
                       style={{ marginBottom: 0 }}
                       noStyle
                     >
-                      <Input placeholder="127.0.0.1" style={{ width: '90%' }} />
+                      <Input placeholder="foo.com" style={{ width: '90%' }} />
                     </Form.Item>
                     <MinusCircleOutlined
                       className={styles.dynamicDeleteButton}
@@ -223,7 +244,7 @@ const CreateDrawer: React.FC<{
           </Form.Item>
         </Card>
 
-        <Card style={{ marginTop: 15 }} title="Upstream 配置" >
+        <Card loading={id !== '' && get.loading} style={{ marginTop: 15 }} title="Upstream 配置" >
           <Form.Item name={['upstream', 'name']} label="名称" rules={[{ required: true }]}>
             <Input />
           </Form.Item>

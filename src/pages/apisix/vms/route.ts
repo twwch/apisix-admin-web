@@ -33,8 +33,19 @@ interface RouteCreate {
 interface CreateRouteConf {
   route: RouteCreate
   upstream: Upstream
+  id: string
+}
+
+interface GetRouteNode {
+  node_key: string
+  node_value: string
+}
+interface GetRouteResp {
+  route?: RouteCreate
+  upstream?: Upstream
+  nodes?: GetRouteNode[]
 }
 
 export {
-  Routes, Route, RouteValue, RouteCreate, CreateRouteConf
+  Routes, Route, RouteValue, RouteCreate, CreateRouteConf, GetRouteResp
 }

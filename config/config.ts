@@ -10,8 +10,11 @@ export default defineConfig({
   ],
   proxy: {
     '/apisix_admin/v1': {
-      'target': 'http://127.0.0.1:9002/',
+      'target': 'https://efficient.xiaoduoai.com/',
       'changeOrigin': true,
     },
   },
+  publicPath: process.env.NODE_ENV === 'production' ? '/apisix-dashboard/' : '/',
+  history: { type: 'hash' },
+  hash: true,	// 清除缓存
 });
