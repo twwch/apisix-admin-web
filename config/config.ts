@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   proxy: {
     '/apisix_admin/v1': {
-      'target': 'https://efficient.xiaoduoai.com/',
+      'target': 'http://192.168.209.158:9080/',
       'changeOrigin': true,
     },
   },
