@@ -20,18 +20,18 @@ const Upstream: React.FC<{}> = () => {
 
   const columns = [
     {
-      title: 'RouteId',
+      title: 'UpstreamId',
       dataIndex: 'id',
       key: 'id',
       fixed: 'left',
       render: (text: string, record: ListUpstream) => record.value.id
     },
-    {
-      title: '名称',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string, record: ListUpstream) => record.value?.name
-    },
+    // {
+    //   title: '名称',
+    //   dataIndex: 'name',
+    //   key: 'name',
+    //   render: (text: string, record: ListUpstream) => record.value?.name
+    // },
     {
       title: '描述',
       dataIndex: 'desc',
@@ -57,13 +57,13 @@ const Upstream: React.FC<{}> = () => {
       key: 'key',
       width: 240,
     },
-    {
-      title: '创建时间',
-      dataIndex: 'create_time',
-      key: 'create_time',
-      width: 200,
-      render: (text: string, record: ListUpstream) => record.value.create_time ? moment.unix(record.value?.create_time).format('YYYY-MM-DD HH:mm:ss') : ''
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'create_time',
+    //   key: 'create_time',
+    //   width: 200,
+    //   render: (text: string, record: ListUpstream) => record.value.create_time ? moment.unix(record.value?.create_time).format('YYYY-MM-DD HH:mm:ss') : ''
+    // },
   ];
   return (
     <Card

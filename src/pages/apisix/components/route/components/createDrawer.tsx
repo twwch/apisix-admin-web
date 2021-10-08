@@ -245,9 +245,9 @@ const CreateDrawer: React.FC<{
         </Card>
 
         <Card loading={id !== '' && get.loading} style={{ marginTop: 15 }} title="Upstream 配置" >
-          <Form.Item name={['upstream', 'name']} label="名称" rules={[{ required: true }]}>
+          {/* <Form.Item name={['upstream', 'name']} label="名称" rules={[{ required: true }]}>
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item name={['upstream', 'desc']} label="描述" rules={[{ required: true }]}>
             <Input />
           </Form.Item>

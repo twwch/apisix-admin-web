@@ -17,7 +17,7 @@ const Route: React.FC<{}> = () => {
   const list = useRequest(RouteService.list, {
     manual: true,
     onSuccess: (data) => {
-      setRoutes({ total: data.total, routes: data.routes })
+      setRoutes({ total: data?.total, routes: data?.routes })
     }
   })
   useEffect(() => {
@@ -29,8 +29,7 @@ const Route: React.FC<{}> = () => {
   }
   const deleteRoute = useRequest(RouteService.delete, {
     manual: true,
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       list.refresh()
     }
   })
@@ -79,7 +78,7 @@ const Route: React.FC<{}> = () => {
       title: '域名限制',
       dataIndex: 'uri',
       key: 'uri',
-      width: 150,
+      width: 200,
       render: (text: string, record: RouteVm) => record.value.hosts?.map(i => <Tag key={i} style={tagStyle} color="#87d068">{i}</Tag>)
     },
     {
@@ -102,13 +101,13 @@ const Route: React.FC<{}> = () => {
       key: 'key',
       width: 200,
     },
-    {
-      title: '创建时间',
-      dataIndex: 'create_time',
-      key: 'create_time',
-      width: 200,
-      render: (text: string, record: RouteVm) => moment.unix(record.value.create_time).format('YYYY-MM-DD HH:mm:ss')
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'create_time',
+    //   key: 'create_time',
+    //   width: 200,
+    //   render: (text: string, record: RouteVm) => moment.unix(record.value.create_time).format('YYYY-MM-DD HH:mm:ss')
+    // },
     {
       title: '操作',
       key: 'action',

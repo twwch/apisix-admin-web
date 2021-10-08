@@ -22,7 +22,7 @@ export const manus: Meun[] = [
       },
     ]
   },
-  {
+  /* {
     path: '/admin/service',
     name: '服务管理',
     routes: [
@@ -37,7 +37,7 @@ export const manus: Meun[] = [
         component: '@/pages/index',
       },
     ]
-  },
+  }, */
 ]
 
 export default [

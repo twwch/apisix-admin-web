@@ -16,8 +16,7 @@ const Login: React.FC<{}> = () => {
   const login = useRequest(UserService.login, {
     manual: true,
     onSuccess: (data) => {
-      if (data.token !== "") {
-        localStorage.setItem("token", data.token);
+      if (data.code === 0) {
         history.push('/admin')
       }
 
